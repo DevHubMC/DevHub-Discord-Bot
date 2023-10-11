@@ -1,5 +1,6 @@
 package com.fragmc.StaffApps;
 
+import com.fragmc.Config;
 import com.fragmc.DatabaseManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -16,15 +17,17 @@ import java.util.concurrent.CompletableFuture;
 public class AppCommandListener extends ListenerAdapter {
     private DatabaseManager databaseManager;
     private JDA jda;
-    public AppCommandListener(DatabaseManager databaseManager){
+
+    public AppCommandListener(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
         this.jda = jda;
     }
+
     @Override
     public void onReady(ReadyEvent event) {
         // Replace "tickets" with the actual name of your channel
         String channelNameApp = "applications";
-        TextChannel appChannel = event.getJDA().getGuildById(1125141974954033185L).getTextChannelsByName("applications", true).stream().findFirst().orElse(null);
+        TextChannel appChannel = event.getJDA().getGuildById(Config.getGuildID()).getTextChannelsByName("applications", true).stream().findFirst().orElse(null);
 
         if (appChannel != null) {
             // Purge (delete) all messages in the channel
@@ -37,8 +40,6 @@ public class AppCommandListener extends ListenerAdapter {
             });
         });
     }
-
-
 
 
     private void sendAppEmbed(TextChannel channel) {

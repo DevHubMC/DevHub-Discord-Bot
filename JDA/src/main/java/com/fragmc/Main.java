@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
 
-public class Main extends ListenerAdapter{
+public class Main extends ListenerAdapter {
     private static DatabaseManager databaseManager = null;
     private static long userId;
     private static Message message;
@@ -27,11 +27,11 @@ public class Main extends ListenerAdapter{
 
     public static void main(String[] args) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(Config.getBotToken());
-        builder.addEventListeners(new Main(new DatabaseManager(
-                "jdbc:mysql://localhost:3306/ticket_schema",
-                "root",
-                 "CONEmAltgHw1"
-        ), userId, message, button, jda));
+//        builder.addEventListeners(new Main(new DatabaseManager(
+//                "jdbc:mysql://localhost:3306/ticket_schema",
+//                "root",
+//                 "CONEmAltgHw1"
+//        ), userId, message, button, jda));
         builder.setActivity(Activity.watching("DevHub Tickets"));
         builder.setStatus(OnlineStatus.ONLINE);
         builder.enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES);

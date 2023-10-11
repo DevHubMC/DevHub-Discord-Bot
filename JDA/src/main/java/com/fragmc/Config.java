@@ -8,4 +8,8 @@ public class Config {
     public static String getBotToken() {
         return dotenv.get("BOT_TOKEN");
     }
+
+    public static String getGuildID() {
+        return dotenv.get("GUILD_ID");
+    }
 }

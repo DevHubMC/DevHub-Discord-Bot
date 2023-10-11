@@ -1,5 +1,6 @@
 package com.fragmc.Tickets;
 
+import com.fragmc.Config;
 import com.fragmc.DatabaseManager;
 import com.fragmc.StaffApps.AppCreateClass;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -26,7 +27,7 @@ public class TicketCommandListener extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         // Replace "tickets" with the actual name of your channel
         String channelName = "tickets";
-        TextChannel ticketsChannel = event.getJDA().getGuildById(1125141974954033185L).getTextChannelsByName("tickets", true).stream().findFirst().orElse(null);
+        TextChannel ticketsChannel = event.getJDA().getGuildById(Config.getGuildID()).getTextChannelsByName("tickets", true).stream().findFirst().orElse(null);
 
         // Check if the channel exists
         if (ticketsChannel != null) {

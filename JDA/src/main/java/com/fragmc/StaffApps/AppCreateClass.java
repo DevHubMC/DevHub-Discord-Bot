@@ -4,23 +4,17 @@ import com.fragmc.DatabaseManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.utils.data.DataObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppCreateClass extends ListenerAdapter {
@@ -29,7 +23,7 @@ public class AppCreateClass extends ListenerAdapter {
     private net.dv8tion.jda.api.interactions.components.buttons.Button button;
     private String answer;
 
-    public AppCreateClass(net.dv8tion.jda.api.interactions.components.buttons.Button button,DatabaseManager databaseManager, JDA jda) {
+    public AppCreateClass(net.dv8tion.jda.api.interactions.components.buttons.Button button, DatabaseManager databaseManager, JDA jda) {
         this.button = button;
         this.databaseManager = databaseManager;
     }
@@ -39,14 +33,14 @@ public class AppCreateClass extends ListenerAdapter {
     }
 
     private Question currentQuestion;
-    private Array[] answers = new Array[9];
+    private final List<String> answers = new ArrayList<>();
 
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent e) {
-        if (e.getComponentId().equalsIgnoreCase("staffApps")){
+        if (e.getComponentId().equalsIgnoreCase("staffApps")) {
             Member member = e.getMember();
-            if (member == null){
+            if (member == null) {
                 return;
             }
             String username = member.getUser().getName();
@@ -57,8 +51,8 @@ public class AppCreateClass extends ListenerAdapter {
                     break;
                 }
             }
-            if (applicationCategory != null){
-                String ChannelName = username+"'s-staff-application";
+            if (applicationCategory != null) {
+                String ChannelName = username + "'s-staff-application";
                 Guild guild = e.getGuild();
 
                 applicationCategory.createTextChannel(ChannelName).queue(channel -> {
@@ -95,40 +89,37 @@ public class AppCreateClass extends ListenerAdapter {
         TextChannel channel = e.getChannel().asTextChannel();
         String channelName = channel.getName();
 
-        if (channelName.contains("'s-staff-application")) {
+        if (channelName.contains("-staff-application")) {
             // User is answering a question
-            Array answerA = e.getMessage().getContentRaw();
+            String answerA = e.getMessage().getContentRaw();
 
-            Arrays.stream(answers).limit(10);
-
-            if (answers.length == 0) {
+            if (answers.isEmpty()) {
                 IGNQuestion(channel);
-                answers[currentQuestion.ordinal()] = answerA;
-
-            }if(answers.length == 1) {
+                answers.add(answerA);
+            } else if (answers.size() == 1) {
                 RealmQuestion(channel);
-            }if(answers.length == 2) {
+            } else if (answers.size() == 2) {
                 AgeQuestion(channel);
-            }if(answers.length == 3) {
+            } else if (answers.size() == 3) {
                 TimeReqQuestion(channel);
-            }if(answers.length == 4) {
+            } else if (answers.size() == 4) {
                 PriorAppQuestion(channel);
-            }if(answers.length == 5) {
-               PunishmentsQuestion(channel);
-            }if(answers.length == 6) {
+            } else if (answers.size() == 5) {
+                PunishmentsQuestion(channel);
+            } else if (answers.size() == 6) {
                 WhyStaffQuestion(channel);
-            }if(answers.length == 7) {
+            } else if (answers.size() == 7) {
                 ExperienceQuestion(channel);
-            }if(answers.length == 8) {
+            } else if (answers.size() == 8) {
                 HelperDutyQuestion(channel);
-            }if(answers.length == 9) {
+            } else if (answers.size() == 9) {
                 ClipQuestion(channel);
             }
         }
     }
 
 
-    public EmbedBuilder MainEmbed(TextChannel channel, Member member, Role staffRole){
+    public EmbedBuilder MainEmbed(TextChannel channel, Member member, Role staffRole) {
         EmbedBuilder FirstEmbed = new EmbedBuilder()
                 .setTitle("Staff Application")
                 .setDescription("Please answer all the questions asked below")
@@ -139,7 +130,8 @@ public class AppCreateClass extends ListenerAdapter {
                 .queue();
         return FirstEmbed;
     }
-    public EmbedBuilder IGNQuestion(TextChannel channel){
+
+    public EmbedBuilder IGNQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question One**")
                 .setDescription("➣ What is your In-Game Name?")
@@ -148,7 +140,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder RealmQuestion(TextChannel channel){
+
+    public EmbedBuilder RealmQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Two**")
                 .setDescription("➣ What realm are you applying for?")
@@ -158,7 +151,7 @@ public class AppCreateClass extends ListenerAdapter {
         return questionOne;
     }
 
-    public EmbedBuilder AgeQuestion(TextChannel channel){
+    public EmbedBuilder AgeQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Three**")
                 .setDescription("➣ How old are you?")
@@ -167,7 +160,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder TimeReqQuestion(TextChannel channel){
+
+    public EmbedBuilder TimeReqQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Four**")
                 .setDescription("➣ How long per week could you dedicate to the server?")
@@ -176,7 +170,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder PriorAppQuestion(TextChannel channel){
+
+    public EmbedBuilder PriorAppQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Five**")
                 .setDescription("➣ Have you ever made a staff application before? If so, when?")
@@ -185,7 +180,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder PunishmentsQuestion(TextChannel channel){
+
+    public EmbedBuilder PunishmentsQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Six**")
                 .setDescription("➣ Have you ever been punished on one of our servers? If so, please expand.")
@@ -194,7 +190,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder WhyStaffQuestion(TextChannel channel){
+
+    public EmbedBuilder WhyStaffQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Seven**")
                 .setDescription("➣ Have you ever been punished on one of our servers? If so, please expand.")
@@ -203,7 +200,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder ExperienceQuestion(TextChannel channel){
+
+    public EmbedBuilder ExperienceQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Eight**")
                 .setDescription("➣ What experience do you have that could help you in this role?")
@@ -212,7 +210,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder HelperDutyQuestion(TextChannel channel){
+
+    public EmbedBuilder HelperDutyQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Nine**")
                 .setDescription("➣ Please explain what your duties as helper would be.")
@@ -221,7 +220,8 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
-    public EmbedBuilder ClipQuestion(TextChannel channel){
+
+    public EmbedBuilder ClipQuestion(TextChannel channel) {
         EmbedBuilder questionOne = new EmbedBuilder()
                 .setTitle("**Question Ten**")
                 .setDescription("➣ Are you able to clip or record your game of any kind?")
@@ -230,6 +230,7 @@ public class AppCreateClass extends ListenerAdapter {
         channel.sendMessageEmbeds(questionOne.build()).queue();
         return questionOne;
     }
+
     private EmbedBuilder getQuestionByType(Question questionType, TextChannel channel) {
         switch (questionType) {
             case IGN:
