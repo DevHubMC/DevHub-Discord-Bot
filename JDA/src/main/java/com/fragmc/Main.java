@@ -26,7 +26,7 @@ public class Main extends ListenerAdapter{
     }
 
     public static void main(String[] args) throws LoginException {
-        JDABuilder builder = JDABuilder.createDefault("MTE2MTI3NjgxNDUxMDAxNDUzNQ.GkNpzh.2YcE4DQbu__Z3SWDSx8Ql4ZbPC1WdoOzy5GpZw");
+        JDABuilder builder = JDABuilder.createDefault(Config.getBotToken());
         builder.addEventListeners(new Main(new DatabaseManager(
                 "jdbc:mysql://localhost:3306/ticket_schema",
                 "root",
