@@ -28,6 +28,7 @@ public class CloseTicketCommand implements ICommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-
+        OptionMapping option = event.getOptions("channel");
+        String channelOption = event.getOptions.getAsString;
     }
 }
