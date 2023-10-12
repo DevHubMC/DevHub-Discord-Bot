@@ -29,6 +29,20 @@ public class CloseTicketCommand implements ICommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         OptionMapping option = event.getOptions("channel");
-        String channelOption = event.getOptions.getAsString;
+        String channelOption = option.getAsString;
+
+        Category category;
+        if (channelOption == null) {
+            for (Category categories : event.getGuild()){
+                  if (categories.equalsIgnoreCase("Prisons Tickets")){
+                      category = categories;
+                  }
+            }
+
+          
+            
+        }
+
+        }
     }
 }
