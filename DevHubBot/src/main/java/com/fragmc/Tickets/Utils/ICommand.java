@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ICommand {
@@ -13,6 +14,6 @@ public interface ICommand {
 
     List<OptionData> getOptions();
 
-    void execute (SlashCommandInteractionEvent event);
+    void execute (SlashCommandInteractionEvent event) throws IOException;
 
 }

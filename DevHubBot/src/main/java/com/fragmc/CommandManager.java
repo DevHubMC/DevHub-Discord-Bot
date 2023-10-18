@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,11 @@ public class CommandManager extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         for (ICommand command : commands){
             if (command.getName().equals(event.getName())){
-                command.execute(event);
+                try {
+                    command.execute(event);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
         }
